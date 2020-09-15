@@ -1,0 +1,30 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "AnimeHub's server",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app",
+    "server": "nodemon app"
+  },
+  "keywords": [],
+  "author": "injahow",
+  "license": "MIT",
+  "dependencies": {
+    "@koa/router": "^9.4.0",
+    "art-template": "^4.13.2",
+    "got": "^11.6.2",
+    "gravatar": "^1.8.1",
+    "jsonwebtoken": "^8.5.1",
+    "koa": "^2.13.0",
+    "koa-art-template": "^1.1.1",
+    "koa-bodyparser": "^4.3.0",
+    "koa-convert": "^2.0.0",
+    "koa-logger": "^3.2.1",
+    "koa-static": "^5.0.0",
+    "md5": "^2.3.0",
+    "moment": "^2.28.0",
+    "mongoose": "^5.10.5",
+    "pinyin": "^2.9.1"
+  }
+}

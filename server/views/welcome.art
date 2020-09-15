@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Welcome to AnimeHub!</title>
+  <style>
+    .main { width:80%; margin:100px auto; box-sizing:border-box; padding:50px;text-align: center;}
+    .main p { display:block; font-size:24px; font-weight:300; color:#839ca1;}
+    .main a { color:#0099ff; text-decoration:none;}
+  </style>
+</head>
+<body>
+  <div class="main">
+
+    <h1>
+      <span style="color: #0099ff;">AnimeHub</span>
+    </h1>
+    <p> The AnimeHub is successfully installed and working. </p>
+    <p>More help please refer to
+      <a href="./docs" target="_blank">AnimeHub Docs</a>
+    </p>
+
+  </div>
+</body>
+
+</html>
