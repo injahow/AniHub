@@ -39,7 +39,7 @@ module.exports = {
       } else {
         ctx.status = 400;
         ctx.body = {
-          err: '密码错误!',
+          error: '密码错误!',
           status: '-1'
         }
       }
@@ -47,7 +47,7 @@ module.exports = {
       ctx.status = 400;
       ctx.body = {
         status: '-1',
-        err: '邮箱不存在!'
+        error: '邮箱不存在!'
       };
     }
 
@@ -66,7 +66,7 @@ module.exports = {
       ctx.status = 400;
       ctx.body = {
         status: '-1',
-        err: '邮箱重复!'
+        error: '邮箱重复!'
       };
     } else {
       const newUser = new User({
@@ -86,11 +86,11 @@ module.exports = {
             status: '1'
           }
         })
-        .catch((err) => {
+        .catch((error) => {
           ctx.status = 400
           ctx.body = {
             status: '-1',
-            err
+            error
           }
         });
     }

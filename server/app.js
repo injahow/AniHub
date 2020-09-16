@@ -21,13 +21,13 @@ app.use(bodyParser())
 // 配置跨域
 app.use(cors({
   origin: () => {
-      return config.corsURI
+    return config.corsURI
   },
-  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
   maxAge: 5,
   credentials: true,
-  allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With'],
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization']
 }))
 
 // 配置模板渲染引擎
