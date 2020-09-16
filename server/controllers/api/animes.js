@@ -27,7 +27,7 @@ module.exports = {
       name: ctx.request.body.name
     });
     if (findname.length > 0) {
-      ctx.status = 202;
+      ctx.status = 400;
       ctx.body = {
         status: '-1',
         err: '名称重复!'
@@ -104,7 +104,7 @@ module.exports = {
       _id: ctx.params.id
     }, updateFields, function (err) {
       if (err) {
-        ctx.status = 204;
+        ctx.status = 400;
         ctx.body = {
           status: '-1',
           err

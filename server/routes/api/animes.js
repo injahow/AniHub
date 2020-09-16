@@ -1,9 +1,9 @@
 /**
  * Anime API Routers 动漫API路由
  */
-const router = require('@koa/router')();
+const router = require('@koa/router')()
 
-const animeApi = require('../../controllers/api/animes');
+const animeApi = require('../../controllers/api/animes')
 
 const routers = router
   .get('/', animeApi.getList) // 查询全部

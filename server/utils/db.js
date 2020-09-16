@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const mongodbURI = require('./config').mongodbURI;
+const mongoose = require('mongoose')
+const mongodbURI = require('./config').mongodbURI
 
 // 连接数据库
 const conn = mongoose.createConnection(
@@ -9,10 +9,10 @@ const conn = mongoose.createConnection(
   }
 )
 conn.on('open', () => {
-  console.log('mongodb connected !');
+  console.log('mongodb connected !')
 })
 conn.on('err', (err) => {
-  console.log('err:' + err);
+  console.log('err:' + err)
 })
 
-module.exports = conn;
+module.exports = conn

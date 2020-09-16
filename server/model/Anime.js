@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose')
+const Schema = mongoose.Schema
 
-const db = require('../utils/db');
+const db = require('../utils/db')
 
 const AnimeSchema = new Schema({
   name: {
@@ -35,6 +35,6 @@ const AnimeSchema = new Schema({
     type: String,
     required: true
   },
-});
+})
 
-module.exports = Anime = db.model('Anime', AnimeSchema);
+module.exports = Anime = db.model('Anime', AnimeSchema)

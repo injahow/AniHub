@@ -1,13 +1,13 @@
 /**
  * All Routers 路由合并
  */
-const router = require('@koa/router')();
-const path = require('path');
-const fs = require('fs');
+const router = require('@koa/router')()
+const path = require('path')
+const fs = require('fs')
 
 // 首页
 router.get('/', async ctx => {
-  await ctx.render('welcome');
+  await ctx.render('welcome')
 });
 
 // 同步遍历 add routes_dir
@@ -27,11 +27,11 @@ travel(path.join(__dirname, './'), dirs)
 dirs.forEach((filedir) => {
   const root_dir = path.join(__dirname, './')
   const my_dir = filedir.substring(root_dir.length, filedir.length - 3)
-  const require_dir = my_dir.split('\\').join('/')
+  const require_dir = my_dir.replace('\\', '/')
   if (require_dir !== 'index') {
-    //console.log(`require_dir ./${require_dir}`);
+    //console.log(`require_dir ./${require_dir}`)
     const router_js = require(`./${require_dir}`)
-    console.log(`use /${require_dir} as router`);
+    //console.log(`use /${require_dir} as router`)
     router.use(`/${require_dir}`, router_js.routes(), router_js.allowedMethods())
   }
 })

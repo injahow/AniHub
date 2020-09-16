@@ -13,7 +13,7 @@ module.exports = {
     const result = re.exec(url);
     if (result) {
       try {
-        console.log(`https://www.${result.toString()}`);
+        // console.log(`https://www.${result.toString()}`);
         const response = await got(`https://www.${result.toString()}`);
 
         let obj = await response.body.match(/__INITIAL_STATE__[^#]+function/g).toString();
@@ -38,12 +38,19 @@ module.exports = {
           region: region,
           publish: obj.publish.pub_date
         };
+        ctx.status = 200;
         ctx.body = anime;
       } catch (error) {
-        ctx.body = {}
+        ctx.status = 500;
+        ctx.body = {
+          error
+        }
       }
     } else {
-      ctx.body = {}
+      ctx.status = 406;
+      ctx.body = {
+        error: 'params \'url\' error'
+      }
     }
   }
 
