@@ -3,6 +3,7 @@ const Koa = require('koa')
 const convert = require('koa-convert')
 const koaLogger = require('koa-logger')
 const bodyParser = require('koa-bodyparser')
+const cors = require('koa2-cors')
 const static = require('koa-static')
 const render = require('koa-art-template')
 
@@ -16,6 +17,18 @@ app.use(convert(koaLogger()))
 
 // 配置body解析
 app.use(bodyParser())
+
+// 配置跨域
+app.use(cors({
+  origin: () => {
+      return config.corsURI
+  },
+  exposeHeaders: ['WWW-Authenticate', 'Server-Authorization'],
+  maxAge: 5,
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'DELETE', 'PUT'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
+}))
 
 // 配置模板渲染引擎
 render(app, {
