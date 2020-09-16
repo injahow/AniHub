@@ -1,15 +1,22 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+
+import User from '@/components/user'
+import Anime from '@/components/anime'
 
 Vue.use(Router)
 
 export default new Router({
-  routes: [
+  mode: 'history',
+  routes: [{
+      path: '/user',
+      name: 'User',
+      component: User
+    },
     {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
+      path: '/anime',
+      name: 'Anime',
+      component: Anime
     }
   ]
 })
