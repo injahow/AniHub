@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      window.location = `./edit/${row._id}`;
+      this.$router.push({ name: "anime_edit", params: { id: row._id } });
     },
     handleDelete(index, row) {
       const that = this;
@@ -78,7 +78,7 @@ export default {
       }
     },
     handleClick(val) {
-      window.location = `./${val._id}`;
+      this.$router.push({ name: "anime_detail", params: { id: val._id } });
     },
   },
 };
