@@ -96,15 +96,11 @@ import animeApi from "@/services/Anime";
 export default {
   data() {
     return {
-      animeform: [],
+      animeform: {},
       actor_options: [],
       staff_options: [],
       tags_options: [],
     };
-  },
-  mounted() {
-
-    console.log('xxxxxxxxxxxxxxxxx');
   },
   methods: {
     onSubmit(anime) {
@@ -113,6 +109,7 @@ export default {
         .then((res) => {
           if (res.data.status == "1") {
             this.$message("提交成功!");
+            this.$router.push({ name: "anime"});
           } else {
             this.$message("错误: " + res.data.error);
           }

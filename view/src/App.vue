@@ -9,26 +9,30 @@
         <a href="https://injahow.com" target="_blank">关于</a>
       </el-menu-item>
     </el-menu>
-    <router-view />
+    <router-view v-if="isRouterAlive" />
   </div>
 </template>
 
 <script>
 export default {
+  provide() {
+    return {
+      reload: this.reload,
+    };
+  },
   data() {
     return {
-      //reload: this.reload, // 过渡刷新
+      isRouterAlive: true,
       activeIndex: "1",
     };
   },
   methods: {
-    /*
-    reload(){
-      this.isRouterAlive = false
-      this.$nextTick(()=>{
-        this.isRouterAlive = true
-      })
-    },*/
+    reload() {
+      this.isRouterAlive = false;
+      this.$nextTick(() => {
+        this.isRouterAlive = true;
+      });
+    },
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },
