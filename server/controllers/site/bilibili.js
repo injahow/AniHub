@@ -4,16 +4,16 @@ module.exports = {
 
   /**
    * 获取动漫信息
-   * @param {Object} ctx 
+   * @param {Object} ctx
    */
   async getAnimeDetail(ctx) {
     const url = ctx.request.query.url
-    console.log(url)
+    //console.log(url)
     const re = /bilibili.com\/bangumi\/media\/md\d+/g
     const result = re.exec(url)
     if (result) {
       try {
-        // console.log(`https://www.${result.toString()}`)
+
         const response = await got(`https://www.${result.toString()}`)
 
         let obj = await response.body.match(/__INITIAL_STATE__[^#]+function/g).toString()

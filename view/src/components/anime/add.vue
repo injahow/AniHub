@@ -102,6 +102,19 @@ export default {
       tags_options: [],
     };
   },
+  mounted() {
+    const url = this.$route.query.url;
+    animeApi
+      .addFromUrl(url)
+      .then((res) => {
+        if (res) {
+          this.animeform = res.data;
+        }
+      })
+      .catch((error) => {
+        // not do
+      });
+  },
   methods: {
     onSubmit(anime) {
       animeApi
@@ -109,7 +122,7 @@ export default {
         .then((res) => {
           if (res.data.status == "1") {
             this.$message("提交成功!");
-            this.$router.push({ name: "anime"});
+            this.$router.push({ name: "anime" });
           } else {
             this.$message("错误: " + res.data.error);
           }
