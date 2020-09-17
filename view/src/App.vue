@@ -1,11 +1,7 @@
 <template>
   <div id="app">
     <h1 style="color: #409EEF;">Anime Hub</h1>
-    <el-menu
-      :default-active="activeIndex"
-      mode="horizontal"
-      @select="handleSelect"
-    >
+    <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
       <el-menu-item index="1">首页</el-menu-item>
       <el-menu-item index="2">用户</el-menu-item>
       <el-menu-item index="3">动漫</el-menu-item>
@@ -21,10 +17,18 @@
 export default {
   data() {
     return {
-      activeIndex: "1"
+      //reload: this.reload, // 过渡刷新
+      activeIndex: "1",
     };
   },
   methods: {
+    /*
+    reload(){
+      this.isRouterAlive = false
+      this.$nextTick(()=>{
+        this.isRouterAlive = true
+      })
+    },*/
     handleSelect(key, keyPath) {
       console.log(key, keyPath);
     },

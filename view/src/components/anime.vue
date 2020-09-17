@@ -29,6 +29,7 @@
 <script>
 import animeApi from "@/services/Anime";
 export default {
+//  inject: ["reload"],
   data() {
     return {
       tableData: [],
@@ -60,6 +61,7 @@ export default {
               type: "success",
               message: "删除成功!",
             });
+           // that.reload();
           } else {
             that.$message.error("错误: " + res.data.error);
           }

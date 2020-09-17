@@ -96,16 +96,18 @@ import animeApi from "@/services/Anime";
 export default {
   data() {
     return {
-      animeform: {},
+      animeform: [],
       actor_options: [],
       staff_options: [],
       tags_options: [],
     };
   },
+  mounted() {
 
+    console.log('xxxxxxxxxxxxxxxxx');
+  },
   methods: {
     onSubmit(anime) {
-
       animeApi
         .add(anime)
         .then((res) => {
@@ -118,7 +120,6 @@ export default {
         .catch((error) => {
           this.$message.error(error);
         });
-
     },
     onClose() {
       console.log("close");

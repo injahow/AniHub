@@ -22,14 +22,14 @@ export default new Router({
       component: Anime
     },
     {
-      path: '/anime/:id',
-      name: 'anime_detail',
-      component: AnimeDetail
-    },
-    {
       path: '/anime/add',
       name: 'anime_add',
       component: AnimeAdd
+    },
+    {
+      path: '/anime/:id',
+      name: 'anime_detail',
+      component: AnimeDetail
     },
     {
       path: '/anime/edit/:id',
