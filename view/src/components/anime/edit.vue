@@ -152,9 +152,10 @@ export default {
               that.$message("修改成功!");
               changes = [];
               setTimeout(() => {
-                window.location.replace(
-                  "../" + that.old_anime_form._id
-                );
+                this.$router.push({
+                  name: "anime_detail",
+                  params: { id: that.old_anime_form._id },
+                });
               }, 1000);
             } else {
               that.$message("错误: " + res.data.error);
