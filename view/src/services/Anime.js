@@ -1,21 +1,24 @@
-import Api from '@/services/Api'
+import Axios from '@/services/Axios'
 
 export default {
 
   async getList() {
-    return await Api().get('./animes')
+    return await Axios().get('./animes')
   },
-  async add() {
-    return await Api().post('./animes')
+  async add(anime) {
+    return await Axios().post('./animes', anime)
   },
   async getDetail(id) {
-    return await Api().get(`./animes/${id}`)
+    return await Axios().get(`./animes/${id}`)
   },
-  async edit(id) {
-    return await Api().post(`./animes/${id}`)
+  async edit(anime, changes) {
+    return await Axios().put(`./animes/${anime._id}`, {
+      anime,
+      changes
+    })
   },
   async delete(id) {
-    return await Api().delete(`./animes/${id}`)
+    return await Axios().delete(`./animes/${id}`)
   }
 
 

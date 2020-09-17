@@ -47,7 +47,7 @@ export default {
   },
   methods: {
     handleEdit(index, row) {
-      //window.location = './edit/' + row._id
+      window.location = "./edit/" + row._id;
     },
     handleDelete(index, row) {
       const that = this;

@@ -1,12 +1,12 @@
-import Api from '@/services/Api'
+import Axios from '@/services/Axios'
 
 export default {
 
-  async join() {
-    return await Api().post('./users/join')
+  async join(user) {
+    return await Axios().post('./users/join', user)
   },
-  async login() {
-    return await Api().post('./users/login')
+  async login(user) {
+    return await Axios().post('./users/login', user)
   }
 
 }
