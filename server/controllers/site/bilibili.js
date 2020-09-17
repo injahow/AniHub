@@ -7,15 +7,32 @@ module.exports = {
    * @param {Object} ctx
    */
   async getAnimeDetail(ctx) {
-    const url = ctx.request.query.url
-    //console.log(url)
-    const re = /bilibili.com\/bangumi\/media\/md\d+/g
-    const result = re.exec(url)
+    let url = ctx.request.query.url
+    // need to optimize ......
+    const re = [
+      /bilibili.com\/bangumi\/media\/md\d+/g,
+      /bilibili.com\/bangumi\/play\/ss\d+/g,
+      /bilibili.com\/bangumi\/play\/ep\d+/g
+    ]
+    let result
+    let result_temp = []
+    let result_id = 0
+    re.forEach((re_i, i) => {
+      let temp = re_i.exec(url)
+      if (temp) {
+        result_temp.push(temp)
+        result_id = i
+      }
+    })
+
+    if (result_id !== 0){ // not md... => md...
+      const res = await got(`https://www.${result_temp.toString()}`)
+      result = re[0].exec(res.body)
+    }
+
     if (result) {
       try {
-
         const response = await got(`https://www.${result.toString()}`)
-
         let obj = await response.body.match(/__INITIAL_STATE__[^#]+function/g).toString()
         obj = JSON.parse(obj.substring(18, obj.length - 10)).mediaInfo
 
@@ -49,7 +66,7 @@ module.exports = {
     } else {
       ctx.status = 406
       ctx.body = {
-        error: 'params \'url\' error'
+        error: 'params "url" error'
       }
     }
   }
