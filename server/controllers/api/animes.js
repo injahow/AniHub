@@ -45,7 +45,7 @@ module.exports = {
       const newAnime = new Anime({
         name: anime.name,
         cover: anime.cover,
-        othername: pinyin(anime.name, {
+        pinyin: pinyin(anime.name, {
           style: pinyin.STYLE_INITIALS
         }),
         tags: anime.tags,

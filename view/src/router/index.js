@@ -10,7 +10,7 @@ import AnimeDetail from '@/components/anime/detail'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
+  // mode: 'history',
   routes: [{
       path: '/user',
       name: 'user',
