@@ -133,13 +133,31 @@ module.exports = {
    * @param  {obejct} ctx
    */
   async getDetail(ctx) {
-    let data = await Anime.findById(ctx.params.id).lean()
-    data.forEach(function (item) {
-      if (item.publish) {
-        item.publish = moment(item.publish).format('YYYY-MM')
-      }
-    })
-    ctx.body = data
+    await Anime.findById(ctx.params.id).lean()
+      .then((anime) => {
+        if (anime) {
+          anime.publish = moment(anime.publish).format('YYYY-MM')
+          ctx.status = 200
+          ctx.body = {
+            results: anime,
+            status: '1'
+          }
+        } else {
+          ctx.status = 400
+          ctx.body = {
+            error: 'anime_id not find',
+            status: '-1'
+          }
+        }
+      }).catch((error) => {
+        ctx.status = 500
+        ctx.body = {
+          error,
+          status: '-1'
+        }
+
+      })
+
   }
 
 }
