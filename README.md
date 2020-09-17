@@ -1,10 +1,33 @@
-# view
+# AnimeHub
 
-> AnimeHub's view & client
+> A vue / koa app for anime fan to list anime you love
 
 ## Build Setup
 
+### AnimeHub's server
+
 ``` bash
+# cd server folder
+cd server
+
+# install dependencies
+npm install
+
+# serve with hot reload at localhost:8081
+npm run server
+
+# serve start at localhost:8081
+npm run start
+
+```
+
+### AnimeHub's client
+
+``` bash
+
+# cd view folder
+cd view
+
 # install dependencies
 npm install
 
