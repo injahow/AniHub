@@ -11,7 +11,6 @@
     <el-form-item label="介绍">
       <el-input
         type="textarea"
-        :rows="8"
         autosize
         placeholder="请输入介绍"
         v-model="animeform.introduction"
@@ -74,12 +73,12 @@
     </el-form-item>
 
     <el-form-item label="发布时间">
-      <el-col :span="11">
+      <el-col>
         <el-date-picker
           type="month"
           placeholder="选择日期"
           v-model="animeform.publish"
-          style="width: 100%;"
+          style="width: 200px;"
         ></el-date-picker>
       </el-col>
     </el-form-item>

@@ -1,20 +1,32 @@
 <template>
   <div id="app">
-    <h1 style="color: #409EEF;">Anime Hub</h1>
-    <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
-      <el-menu-item index="1">首页</el-menu-item>
-      <el-menu-item index="2">用户</el-menu-item>
-      <el-menu-item index="3">动漫</el-menu-item>
-      <el-menu-item index="4">
-        <a href="https://injahow.com" target="_blank">关于</a>
-      </el-menu-item>
-    </el-menu>
-    <router-view v-if="isRouterAlive" />
+    <div class="header">
+      <el-menu :default-active="this.$route.path" mode="horizontal" router @select="handleSelect">
+        <el-menu-item index="/">
+          <i class="el-icon-s-home"></i>首页
+        </el-menu-item>
+
+        <el-menu-item index="/anime">
+          <i class="el-icon-document"></i>动漫
+        </el-menu-item>
+
+        <el-menu-item index="/user" router="user">
+          <i class="el-icon-user-solid"></i>用户
+        </el-menu-item>
+
+        <el-menu-item index="/about">
+          <i class="el-icon-info"></i>关于
+        </el-menu-item>
+      </el-menu>
+    </div>
+
+    <router-view style="text-align: left;" v-if="isRouterAlive" />
   </div>
 </template>
 
 <script>
 export default {
+  name: "App",
   provide() {
     return {
       reload: this.reload,
@@ -23,7 +35,11 @@ export default {
   data() {
     return {
       isRouterAlive: true,
-      activeIndex: "1",
+    };
+  },
+  mounted() {
+    window.onresize = () => {
+      this.screenWidth = document.body.clientWidth;
     };
   },
   methods: {
@@ -34,7 +50,7 @@ export default {
       });
     },
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
+      //console.log(key, keyPath);
     },
   },
 };
@@ -47,6 +63,5 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
 }
 </style>

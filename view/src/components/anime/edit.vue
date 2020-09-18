@@ -23,6 +23,7 @@
 
     <el-form-item label="标签">
       <el-select
+        style="width:100%"
         v-model="animeform.tags"
         multiple
         filterable
@@ -41,7 +42,14 @@
     </el-form-item>
 
     <el-form-item label="声优">
-      <el-select filterable allow-create v-model="animeform.actor" multiple placeholder="请选择">
+      <el-select
+        style="width:100%"
+        filterable
+        allow-create
+        v-model="animeform.actor"
+        multiple
+        placeholder="请选择"
+      >
         <el-option
           v-for="item in actor_options"
           :key="item.value"
@@ -54,6 +62,7 @@
 
     <el-form-item label="STAFF">
       <el-select
+        style="width:80%"
         filterable
         allow-create
         default-first-option
@@ -81,12 +90,12 @@
     </el-form-item>
 
     <el-form-item label="发布时间">
-      <el-col :span="11">
+      <el-col>
         <el-date-picker
           type="month"
           placeholder="选择日期"
           v-model="animeform.publish"
-          style="width: 100%;"
+          style="width: 200px;"
         ></el-date-picker>
       </el-col>
       <el-button @click="resetValue(animeform,'publish')">重置</el-button>
