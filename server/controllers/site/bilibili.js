@@ -9,7 +9,7 @@ module.exports = {
   async getAnimeDetail(ctx) {
     const url = ctx.request.query.url
     // need to optimize ......
-    const re = [//www.bilibili.com/bangumi/media/md
+    const re = [
       /bilibili.com\/bangumi\/media\/md\d+/g,
       /bilibili.com\/bangumi\/play\/ss\d+/g,
       /bilibili.com\/bangumi\/play\/ep\d+/g
@@ -25,7 +25,7 @@ module.exports = {
       }
     })
 
-    if (result_id !== 0){ // not md... => md...
+    if (result_id !== 0) { // not md... => md...
       const res = await got(`https://www.${result_temp.toString()}`)
       result = re[0].exec(res.body)
     } else {
@@ -35,14 +35,14 @@ module.exports = {
     if (result) {
       try {
         const response = await got(`https://www.${result.toString()}`)
-        let obj = await response.body.match(/__INITIAL_STATE__[^#]+function/g).toString()
+        const obj = await response.body.match(/__INITIAL_STATE__[^#]+function/g).toString()
         const mediaInfo = JSON.parse(obj.substring(18, obj.length - 10)).mediaInfo
 
         let tags = []
         mediaInfo.styles.forEach((i) => {
           tags.push(i.name)
         })
-        const region = obj.type_name == '番剧' ? '日本' : ''
+        //const type_name = mediaInfo.type_name
         if (mediaInfo.cover[4] == 's') { // 改为http 绕过防盗链
           mediaInfo.cover = mediaInfo.cover.replace('https', 'http')
         }
@@ -54,7 +54,7 @@ module.exports = {
           tags: tags,
           actor: mediaInfo.actors.split('\n'),
           staff: mediaInfo.staff.split('\n'),
-          region: region,
+          region: mediaInfo.areas[0].name,
           publish: mediaInfo.publish.pub_date
         }
         ctx.status = 200
