@@ -7,14 +7,14 @@ module.exports = {
    * @param {Object} ctx
    */
   async getAnimeDetail(ctx) {
-    let url = ctx.request.query.url
+    const url = ctx.request.query.url
     // need to optimize ......
-    const re = [
+    const re = [//www.bilibili.com/bangumi/media/md
       /bilibili.com\/bangumi\/media\/md\d+/g,
       /bilibili.com\/bangumi\/play\/ss\d+/g,
       /bilibili.com\/bangumi\/play\/ep\d+/g
     ]
-    let result
+    let result = ''
     let result_temp = []
     let result_id = 0
     re.forEach((re_i, i) => {
@@ -28,32 +28,34 @@ module.exports = {
     if (result_id !== 0){ // not md... => md...
       const res = await got(`https://www.${result_temp.toString()}`)
       result = re[0].exec(res.body)
+    } else {
+      result = result_temp
     }
 
     if (result) {
       try {
         const response = await got(`https://www.${result.toString()}`)
         let obj = await response.body.match(/__INITIAL_STATE__[^#]+function/g).toString()
-        obj = JSON.parse(obj.substring(18, obj.length - 10)).mediaInfo
+        const mediaInfo = JSON.parse(obj.substring(18, obj.length - 10)).mediaInfo
 
         let tags = []
-        obj.styles.forEach((i) => {
+        mediaInfo.styles.forEach((i) => {
           tags.push(i.name)
         })
         const region = obj.type_name == '番剧' ? '日本' : ''
-        if (obj.cover[4] == 's') { // 改为http 绕过防盗链
-          obj.cover = obj.cover.replace('https', 'http')
+        if (mediaInfo.cover[4] == 's') { // 改为http 绕过防盗链
+          mediaInfo.cover = mediaInfo.cover.replace('https', 'http')
         }
 
         const anime = {
-          name: obj.title,
-          cover: obj.cover,
-          introduction: obj.evaluate,
+          name: mediaInfo.title,
+          cover: mediaInfo.cover,
+          introduction: mediaInfo.evaluate,
           tags: tags,
-          actor: obj.actors.split('\n'),
-          staff: obj.staff.split('\n'),
+          actor: mediaInfo.actors.split('\n'),
+          staff: mediaInfo.staff.split('\n'),
           region: region,
-          publish: obj.publish.pub_date
+          publish: mediaInfo.publish.pub_date
         }
         ctx.status = 200
         ctx.body = anime
