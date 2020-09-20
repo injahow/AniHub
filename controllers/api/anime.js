@@ -11,16 +11,22 @@ module.exports = {
    */
   async getList(ctx) {
     let animes = await Anime.find({}, 'name cover tags region publish').lean()
+    ctx.status = 200
     if (animes.length > 0) {
       animes.forEach((item) => {
         if (item.publish) {
           item.publish = moment(item.publish).format('YYYY-MM')
         }
       })
-      ctx.status = 200
       ctx.body = {
         code: 200,
         data: animes,
+        message: 'success'
+      }
+    } else {
+      ctx.body = {
+        code: 200,
+        data: [],
         message: 'success'
       }
     }
@@ -92,7 +98,7 @@ module.exports = {
         ctx.status = 200
         ctx.body = {
           code: 200,
-          msg: '删除成功'
+          message: 'success'
         }
       }
     })
@@ -116,18 +122,16 @@ module.exports = {
       if (error) {
         ctx.status = 400
         ctx.body = {
-          status: '-1',
+          code: 400,
           error
         }
       } else {
         ctx.status = 200
         ctx.body = {
-          status: '1',
+          code: 200
         }
-
       }
     })
-
   },
 
   /**
@@ -141,25 +145,23 @@ module.exports = {
           anime.publish = moment(anime.publish).format('YYYY-MM')
           ctx.status = 200
           ctx.body = {
-            results: anime,
-            status: '1'
+            code:200,
+            data: anime
           }
         } else {
           ctx.status = 400
           ctx.body = {
+            code: 400,
             error: 'anime_id not find',
-            status: '-1'
           }
         }
       }).catch((error) => {
         ctx.status = 500
         ctx.body = {
-          error,
-          status: '-1'
+          code: 500,
+          error
         }
-
       })
-
   }
 
 }

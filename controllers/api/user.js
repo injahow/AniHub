@@ -34,7 +34,7 @@ module.exports = {
    * 用户登录
    * @param  {object} ctx
    */
-  async signIn(ctx) {//'/vue-admin-template/user/login',
+  async signIn(ctx) {
 
     const { username } = ctx.request.body
     const token = tokens[username]
@@ -57,7 +57,7 @@ module.exports = {
    * 用户信息
    * @param  {object} ctx
    */
-  async getInfo(ctx) {//'/vue-admin-template/user/login',
+  async getInfo(ctx) {
 
     const token = ctx.query.token
     console.log(token);
