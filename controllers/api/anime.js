@@ -34,6 +34,41 @@ module.exports = {
   },
 
   /**
+  * 按规则搜索数据
+  * @param  {object} ctx
+  */
+  async getIndex(ctx) {
+    const form = ctx.query.form
+    // const type = form.type
+    const region = form.region
+    const publish = form.publish
+    const tags = form.tags
+    let rules = {}
+
+    let animes = await Anime.find(rules, 'name cover tags region publish').lean()
+    ctx.status = 200
+    if (animes.length > 0) {
+      animes.forEach((item) => {
+        if (item.publish) {
+          item.publish = moment(item.publish).format('YYYY-MM')
+        }
+      })
+      ctx.body = {
+        code: 200,
+        data: animes,
+        message: 'success'
+      }
+    } else {
+      ctx.body = {
+        code: 200,
+        data: [],
+        message: 'success'
+      }
+    }
+
+  },
+
+  /**
    * 增加数据操作
    * @param   {object} ctx
    */
@@ -145,7 +180,7 @@ module.exports = {
           anime.publish = moment(anime.publish).format('YYYY-MM')
           ctx.status = 200
           ctx.body = {
-            code:200,
+            code: 200,
             data: anime
           }
         } else {

@@ -1,5 +1,5 @@
 {
-  "name": "server",
+  "name": "animehub",
   "version": "1.0.0",
   "description": "AnimeHub's server",
   "main": "app.js",
@@ -7,7 +7,7 @@
     "start": "node app",
     "server": "nodemon app"
   },
-  "keywords": [],
+  "keywords": ["animehub"],
   "author": "injahow",
   "license": "MIT",
   "dependencies": {
