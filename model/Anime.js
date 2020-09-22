@@ -8,6 +8,10 @@ const AnimeSchema = new Schema({
     type: String,
     required: true
   },
+  type_name: {
+    type: String,
+    required: true
+  },
   pinyin: {
     type: Array
   },

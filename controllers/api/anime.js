@@ -38,14 +38,31 @@ module.exports = {
   * @param  {object} ctx
   */
   async getIndex(ctx) {
-    const form = ctx.query.form
-    // const type = form.type
-    const region = form.region
-    const publish = form.publish
-    const tags = form.tags
-    let rules = {}
+    let form = ctx.query.form
+    let rules
+    if (form) {
+      // type changed !
+      form = JSON.parse(form)
+      // key -> type? region publish! tags
+      rules = form
 
-    let animes = await Anime.find(rules, 'name cover tags region publish').lean()
+      for (let key in form) {
+        if (form[key] === '全部') {
+          delete rules[key]
+        }
+      }
+
+      const year = parseInt(rules['publish'])
+      rules['publish'] = {
+        "$gte": new Date(year, 0, 0, 0, 0, 0).toISOString(),
+        "$lt": new Date(year + 1, 0, 0, 0, 0, 0).toISOString()
+      }
+
+    } else {
+      rules = {}
+    }
+
+    let animes = await Anime.find(rules, 'name cover tags region publish', { limit: 50 }).lean()
     ctx.status = 200
     if (animes.length > 0) {
       animes.forEach((item) => {
@@ -86,6 +103,7 @@ module.exports = {
       const anime = ctx.request.body
       const newAnime = new Anime({
         name: anime.name,
+        type_name: anime.type_name,
         cover: anime.cover,
         pinyin: pinyin(anime.name, {
           style: pinyin.STYLE_INITIALS

@@ -38,11 +38,15 @@ module.exports = {
         const obj = await response.body.match(/__INITIAL_STATE__[^#]+function/g).toString()
         const mediaInfo = JSON.parse(obj.substring(18, obj.length - 10)).mediaInfo
 
+        let type_name = mediaInfo.type_name
+        if (type_name === '番剧') {
+          type_name = '正片'
+        }
+
         let tags = []
         mediaInfo.styles.forEach((i) => {
           tags.push(i.name)
         })
-        //const type_name = mediaInfo.type_name
         if (mediaInfo.cover[4] == 's') { // 改为http 绕过防盗链
           mediaInfo.cover = mediaInfo.cover.replace('https', 'http')
         }
@@ -50,8 +54,9 @@ module.exports = {
         const anime = {
           name: mediaInfo.title,
           cover: mediaInfo.cover,
+          type_name,
           introduction: mediaInfo.evaluate,
-          tags: tags,
+          tags,
           actor: mediaInfo.actors.split('\n'),
           staff: mediaInfo.staff.split('\n'),
           region: mediaInfo.areas[0].name,
