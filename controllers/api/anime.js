@@ -11,26 +11,19 @@ module.exports = {
    */
   async getList(ctx) {
     let animes = await Anime.find({}, 'name cover tags region publish').lean()
-    ctx.status = 200
     if (animes.length > 0) {
       animes.forEach((item) => {
         if (item.publish) {
           item.publish = moment(item.publish).format('YYYY-MM')
         }
       })
-      ctx.body = {
-        code: 200,
-        data: animes,
-        message: 'success'
-      }
-    } else {
-      ctx.body = {
-        code: 200,
-        data: [],
-        message: 'success'
-      }
     }
-
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      data: animes,
+      message: 'success'
+    }
   },
 
   /**
@@ -60,19 +53,47 @@ module.exports = {
     }
 
     let animes = await Anime.find(rules, 'name cover tags region publish', { limit: 50 }).lean()
-    ctx.status = 200
+
     if (animes.length > 0) {
       animes.forEach((item) => {
         if (item.publish) {
           item.publish = moment(item.publish).format('YYYY-MM')
         }
       })
+    }
+    ctx.status = 200
+    ctx.body = {
+      code: 200,
+      data: animes,
+      message: 'success'
+    }
+  },
+
+  /**
+  * 按名称搜索
+  * @param  {object} ctx
+  */
+  async search(ctx) {
+    let name = ctx.request.query.name
+    let rules
+    if (name !== '') {
+      rules = { 'name': eval(`/${name}/i`) }
+      let animes = await Anime.find(rules, 'name cover tags region publish', { limit: 50 }).lean()
+      if (animes.length > 0) {
+        animes.forEach((item) => {
+          if (item.publish) {
+            item.publish = moment(item.publish).format('YYYY-MM')
+          }
+        })
+      }
+      ctx.status = 200
       ctx.body = {
         code: 200,
         data: animes,
         message: 'success'
       }
     } else {
+      ctx.status = 200
       ctx.body = {
         code: 200,
         data: [],
