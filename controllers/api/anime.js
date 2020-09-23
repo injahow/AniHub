@@ -38,26 +38,23 @@ module.exports = {
   * @param  {object} ctx
   */
   async getIndex(ctx) {
-    let form = ctx.query.form
+    let form = ctx.request.body
     let rules
     if (form) {
-      // type changed !
-      form = JSON.parse(form)
       // key -> type? region publish! tags
       rules = form
-
       for (let key in form) {
         if (form[key] === '全部') {
           delete rules[key]
         }
       }
-
-      const year = parseInt(rules['publish'])
-      rules['publish'] = {
-        "$gte": new Date(year, 0, 0, 0, 0, 0).toISOString(),
-        "$lt": new Date(year + 1, 0, 0, 0, 0, 0).toISOString()
+      if ('publish' in rules) {
+        const year = parseInt(rules['publish'])
+        rules['publish'] = {
+          "$gte": new Date(year, 0, 0, 0, 0, 0).toISOString(),
+          "$lt": new Date(year + 1, 0, 0, 0, 0, 0).toISOString()
+        }
       }
-
     } else {
       rules = {}
     }
