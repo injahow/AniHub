@@ -7,7 +7,9 @@
     "start": "node app",
     "server": "nodemon app"
   },
-  "keywords": ["animehub"],
+  "keywords": [
+    "animehub"
+  ],
   "author": "injahow",
   "license": "MIT",
   "dependencies": {
@@ -27,5 +29,8 @@
     "moment": "^2.28.0",
     "mongoose": "^5.10.5",
     "pinyin": "^2.9.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }

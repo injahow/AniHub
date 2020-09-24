@@ -33,11 +33,9 @@ const AnimeSchema = new Schema({
   },
   tags: {
     type: Array,
-    required: true
   },
   region: {
-    type: String,
-    required: true
+    type: String
   },
 })
 
