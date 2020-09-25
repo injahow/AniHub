@@ -8,16 +8,19 @@ const SubLinkSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'Link',
   },
-  type_name: { // 类型名 - 文件夹
+  link_path: { // 域名路径
     type: String,
     required: true
+  },
+  type_name: { // 类型名 - 文件夹
+    type: String
+  },
+  tags: { // 标签
+    type: Array
   },
   add_date: { // 添加日期 - 有默认
     type: Date,
     default: Date.now
-  },
-  tags: { // 标签
-    type: Array
   }
 })
 

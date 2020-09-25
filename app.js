@@ -45,5 +45,5 @@ app.use(routers.routes()).use(routers.allowedMethods())
 
 // 监听端口
 app.listen(config.port, () => {
-  console.log(`server started on http://localhost:${config.port}`)
+  console.log(`server running at http://localhost:${config.port}`)
 })

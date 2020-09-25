@@ -6,7 +6,7 @@
 
 ### AnimeHub's server
 
-``` bash
+```bash
 # install dependencies
 npm install
 
@@ -17,3 +17,13 @@ npm run server
 npm run start
 
 ```
+
+### AnimeHub's client
+
+[vue-admin-anihub](https://github.com/injahow/vue-admin-anihub)
+
+## License
+
+[MIT](https://github.com/injahow/AnimeHub/blob/master/LICENSE) license.
+
+Copyright (c) 2020 injahow
