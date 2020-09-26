@@ -7,6 +7,7 @@ const SubLinkSchema = new Schema({
   domain_id: { // 域名地址
     type: Schema.Types.ObjectId,
     ref: 'Link',
+    required: true
   },
   link_path: { // 域名路径
     type: String,

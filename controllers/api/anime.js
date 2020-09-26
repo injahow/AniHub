@@ -223,7 +223,7 @@ module.exports = {
           ctx.status = 400
           ctx.body = {
             code: 400,
-            error: 'anime_id not find',
+            error: 'anime_id not found !',
           }
         }
       }).catch((error) => {

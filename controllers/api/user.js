@@ -83,10 +83,10 @@ module.exports = {
    * @param  {object} ctx
    */
   async logout(ctx) {
-
+    // todo
     ctx.body = {
       code: 200,
-      data: 'success'
+      message: 'success'
     }
 
   }

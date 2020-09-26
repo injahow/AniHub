@@ -23,8 +23,7 @@ const LinkSchema = new Schema({
     type: Array
   },
   region: { // 网站所属地区
-    type: String,
-    required: true
+    type: String
   },
 })
 
