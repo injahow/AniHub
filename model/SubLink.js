@@ -4,7 +4,7 @@ const Schema = mongoose.Schema
 const db = require('../utils/db')
 
 const SubLinkSchema = new Schema({
-  domain_id: { // 域名地址
+  link_id: { // 域名地址
     type: Schema.Types.ObjectId,
     ref: 'Link',
     required: true

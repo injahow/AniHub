@@ -8,19 +8,18 @@ const LinkSchema = new Schema({
     type: String,
     required: true
   },
-  type_name: { // 类型名
-    type: String,
-    required: true
-  },
   favicon: { // 网站图标 - 域名/favicon.ico
     type: String
+  },
+  type_name: { // 类型名
+    type: String,
+  },
+  tags: { // 标签
+    type: Array
   },
   add_date: { // 添加日期 - 有默认
     type: Date,
     default: Date.now
-  },
-  tags: { // 标签
-    type: Array
   },
   region: { // 网站所属地区
     type: String
