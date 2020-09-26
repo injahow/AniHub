@@ -2,6 +2,7 @@ const pinyin = require('pinyin')
 const moment = require('moment')
 
 const Anime = require('../../model/Anime')
+const returnCtxBody = require('./common').returnCtxBody
 
 module.exports = {
 
@@ -18,12 +19,7 @@ module.exports = {
         }
       })
     }
-    ctx.status = 200
-    ctx.body = {
-      code: 200,
-      data: animes,
-      message: 'success'
-    }
+    returnCtxBody(ctx, 200, data = animes, message = 'success')
   },
 
   /**
@@ -61,12 +57,7 @@ module.exports = {
         }
       })
     }
-    ctx.status = 200
-    ctx.body = {
-      code: 200,
-      data: animes,
-      message: 'success'
-    }
+    returnCtxBody(ctx, 200, data = animes, message = 'success')
   },
 
   /**
@@ -86,19 +77,9 @@ module.exports = {
           }
         })
       }
-      ctx.status = 200
-      ctx.body = {
-        code: 200,
-        data: animes,
-        message: 'success'
-      }
+      returnCtxBody(ctx, 200, data = animes, message = 'success')
     } else {
-      ctx.status = 200
-      ctx.body = {
-        code: 200,
-        data: [],
-        message: 'success'
-      }
+      returnCtxBody(ctx, 200, data = [], message = 'success')
     }
 
   },
@@ -112,11 +93,7 @@ module.exports = {
       name: ctx.request.body.name
     })
     if (exist_name.length > 0) {
-      ctx.status = 400
-      ctx.body = {
-        code: 400,
-        error: '名称重复!'
-      }
+      returnCtxBody(ctx, 400, error = '名称重复!')
     } else {
       const anime = ctx.request.body
       const newAnime = new Anime({
@@ -135,18 +112,10 @@ module.exports = {
       })
       await newAnime.save()
         .then(() => {
-          ctx.status = 200
-          ctx.body = {
-            code: 200,
-            message: 'success'
-          }
+          returnCtxBody(ctx, 400, message = 'success')
         })
         .catch((error) => {
-          ctx.status = 400
-          ctx.body = {
-            code: 400,
-            error
-          }
+          returnCtxBody(ctx, 400, error)
         })
     }
   },
@@ -160,17 +129,9 @@ module.exports = {
       _id: ctx.params.id
     }, error => {
       if (error) {
-        ctx.status = 400
-        ctx.body = {
-          code: 400,
-          error
-        }
+        returnCtxBody(ctx, 400, error)
       } else {
-        ctx.status = 200
-        ctx.body = {
-          code: 200,
-          message: 'success'
-        }
+        returnCtxBody(ctx, 200, message = 'success')
       }
     })
   },
@@ -191,16 +152,9 @@ module.exports = {
       _id: ctx.params.id
     }, updateFields, function (error) {
       if (error) {
-        ctx.status = 400
-        ctx.body = {
-          code: 400,
-          error
-        }
+        returnCtxBody(ctx, 400, error)
       } else {
-        ctx.status = 200
-        ctx.body = {
-          code: 200
-        }
+        returnCtxBody(ctx, 200)
       }
     })
   },
@@ -214,24 +168,12 @@ module.exports = {
       .then((anime) => {
         if (anime) {
           anime.publish = moment(anime.publish).format('YYYY-MM')
-          ctx.status = 200
-          ctx.body = {
-            code: 200,
-            data: anime
-          }
+          returnCtxBody(ctx, 200, data = anime)
         } else {
-          ctx.status = 400
-          ctx.body = {
-            code: 400,
-            error: 'anime_id not found !',
-          }
+          returnCtxBody(ctx, 400, error = 'anime_id not found !')
         }
       }).catch((error) => {
-        ctx.status = 500
-        ctx.body = {
-          code: 500,
-          error
-        }
+        returnCtxBody(ctx, 500, error)
       })
   }
 
