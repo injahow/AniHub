@@ -1,19 +1,16 @@
 module.exports = {
-  returnCtxBody(ctx, status, ...[]) {
-    ctx.status = status
-    returnBody = { code: status }
-    if (status !== 200) {
-      if (typeof error !== 'undefined') {
-        returnBody['error'] = error
-      } else {
-        returnBody['error'] = 'unknown error'
-      }
+  returnCtxBody(ctx, arg_obj) {
+    ctx.status = arg_obj.code || 500
+    const returnBody = {}
+    returnBody.code = arg_obj.code || 500
+    if (arg_obj.code !== 200) {
+      returnBody.error = arg_obj.error || 'unknown error'
     }
-    if (typeof data !== 'undefined') {
-      returnBody['data'] = data
+    if (arg_obj.data) {
+      returnBody.data = arg_obj.data
     }
-    if (typeof message !== 'undefined') {
-      returnBody['message'] = message
+    if (arg_obj.message) {
+      returnBody.message = arg_obj.message
     }
     ctx.body = returnBody
   }

@@ -3,6 +3,8 @@ const url = require('url')
 const Link = require('../../model/Link')
 const SubLink = require('../../model/SubLink')
 
+const returnCtxBody = require('./common').returnCtxBody
+
 module.exports = {
 
   /**
@@ -18,12 +20,12 @@ module.exports = {
         }
       })
     }
-    ctx.status = 200
-    ctx.body = {
+    returnCtxBody(ctx, {
       code: 200,
       data: links,
       message: 'success'
-    }
+    })
+
   },
 
   /**
@@ -42,12 +44,11 @@ module.exports = {
         item.domain = url.resolve(item.link_id.domain, item.link_path)
       })
     }
-    ctx.status = 200
-    ctx.body = {
+    returnCtxBody(ctx, {
       code: 200,
       data: links,
       message: 'success'
-    }
+    })
 
   },
 
@@ -57,6 +58,13 @@ module.exports = {
    */
   async add(ctx) {
     const ctx_link = ctx.request.body
+    if (ctx_link.domain === '') {
+      returnCtxBody(ctx, {
+        code: 202,
+        error: '链接为空'
+      })
+      return
+    }
     let url_parse = url.parse(ctx_link.domain)
     const hostname = url_parse.hostname
     const protocol = url_parse.protocol
@@ -67,20 +75,19 @@ module.exports = {
         hostname: hostname
       })
     } else {
-      ctx.status = 400
-      ctx.body = {
-        code: 400,
-        error: '域名不合法!'
-      }
+      returnCtxBody(ctx, {
+        code: 202,
+        error: '域名不合法'
+      })
       return
     }
     const exist_domain = await Link.find({ domain })
     if (exist_domain.length > 0) {
-      ctx.status = 400
-      ctx.body = {
-        code: 400,
-        error: '域名重复!'
-      }
+      returnCtxBody(ctx, {
+        code: 202,
+        error: '域名重复'
+      })
+      return
     } else {
       const link = ctx_link
       const newLink = new Link({
@@ -93,18 +100,16 @@ module.exports = {
       })
       await newLink.save()
         .then(() => {
-          ctx.status = 200
-          ctx.body = {
+          returnCtxBody(ctx, {
             code: 200,
             message: 'success'
-          }
+          })
         })
         .catch((error) => {
-          ctx.status = 400
-          ctx.body = {
-            code: 400,
+          returnCtxBody(ctx, {
+            code: 500,
             error
-          }
+          })
         })
     }
   },
@@ -115,6 +120,13 @@ module.exports = {
   */
   async addSub(ctx) {
     const ctx_link = ctx.request.body
+    if (ctx_link.domain === '') {
+      returnCtxBody(ctx, {
+        code: 202,
+        error: '链接为空'
+      })
+      return
+    }
     let url_parse = url.parse(ctx_link.domain)
     const hostname = url_parse.hostname
     const protocol = url_parse.protocol
@@ -126,11 +138,10 @@ module.exports = {
         hostname: hostname
       })
     } else {
-      ctx.status = 400
-      ctx.body = {
-        code: 400,
-        error: '域名不合法!'
-      }
+      returnCtxBody(ctx, {
+        code: 202,
+        error: '域名不合法'
+      })
       return
     }
 
@@ -138,12 +149,11 @@ module.exports = {
     let link_id
     if (exist_domain.length == 0) {
       // 不存在-自动添加-获取id
-      ctx.status = 400
-      ctx.body = {
-        code: 400,
-        error: '未知域名!'
-      }
-
+      returnCtxBody(ctx, {
+        code: 202,
+        error: '未知域名，请添加域名'
+      })
+      return
     } else {
       // 存在域名-获取id
       link_id = exist_domain[0]._id
@@ -152,11 +162,10 @@ module.exports = {
     // 保存sub_link
     const exist_path = await SubLink.find({ link_path: pathname, link_id })
     if (exist_path.length > 0) {
-      ctx.status = 400
-      ctx.body = {
-        code: 400,
-        error: '路径重复!'
-      }
+      returnCtxBody(ctx, {
+        code: 202,
+        error: '路径重复'
+      })
       return
     }
     // 保存
@@ -169,18 +178,16 @@ module.exports = {
     })
     await newSubLink.save()
       .then(() => {
-        ctx.status = 200
-        ctx.body = {
+        returnCtxBody(ctx, {
           code: 200,
           message: 'success'
-        }
+        })
       })
       .catch((error) => {
-        ctx.status = 400
-        ctx.body = {
-          code: 400,
+        returnCtxBody(ctx, {
+          code: 202,
           error
-        }
+        })
       })
 
   },
@@ -201,17 +208,15 @@ module.exports = {
       _id: ctx.params.id
     }, updateFields, error => {
       if (error) {
-        ctx.status = 400
-        ctx.body = {
-          code: 400,
+        returnCtxBody(ctx, {
+          code: 500,
           error
-        }
+        })
       } else {
-        ctx.status = 200
-        ctx.body = {
+        returnCtxBody(ctx, {
           code: 200,
           message: 'success'
-        }
+        })
       }
     })
   },
@@ -232,17 +237,15 @@ module.exports = {
       _id: ctx.params.id
     }, updateFields, error => {
       if (error) {
-        ctx.status = 400
-        ctx.body = {
-          code: 400,
+        returnCtxBody(ctx, {
+          code: 500,
           error
-        }
+        })
       } else {
-        ctx.status = 200
-        ctx.body = {
+        returnCtxBody(ctx, {
           code: 200,
           message: 'success'
-        }
+        })
       }
     })
   },
@@ -256,24 +259,22 @@ module.exports = {
       .then(link => {
         if (link) {
           link.add_date = moment(link.add_date).format('YYYY-MM-DD')
-          ctx.status = 200
-          ctx.body = {
+          returnCtxBody(ctx, {
             code: 200,
-            data: link
-          }
+            data: link,
+            message: 'success'
+          })
         } else {
-          ctx.status = 400
-          ctx.body = {
+          returnCtxBody(ctx, {
             code: 400,
-            error: 'link_id not find',
-          }
+            error: 'link_id not find'
+          })
         }
       }).catch(error => {
-        ctx.status = 500
-        ctx.body = {
+        returnCtxBody(ctx, {
           code: 500,
           error
-        }
+        })
       })
   },
 

@@ -19,7 +19,11 @@ module.exports = {
         }
       })
     }
-    returnCtxBody(ctx, 200, data = animes, message = 'success')
+    returnCtxBody(ctx, {
+      code: 200,
+      data: animes,
+      message: 'success'
+    })
   },
 
   /**
@@ -57,7 +61,11 @@ module.exports = {
         }
       })
     }
-    returnCtxBody(ctx, 200, data = animes, message = 'success')
+    returnCtxBody(ctx, {
+      code: 200,
+      data: animes,
+      message: 'success'
+    })
   },
 
   /**
@@ -65,11 +73,11 @@ module.exports = {
   * @param  {object} ctx
   */
   async search(ctx) {
-    let name = ctx.request.query.name
-    let rules
+    const name = ctx.request.query.name
+    let animes
     if (name !== '') {
-      rules = { 'name': eval(`/${name}/i`) }
-      let animes = await Anime.find(rules, 'name cover tags region publish', { limit: 50 }).lean()
+      const rules = { 'name': eval(`/${name}/i`) }
+      animes = await Anime.find(rules, 'name cover tags region publish', { limit: 50 }).lean()
       if (animes.length > 0) {
         animes.forEach((item) => {
           if (item.publish) {
@@ -77,11 +85,14 @@ module.exports = {
           }
         })
       }
-      returnCtxBody(ctx, 200, data = animes, message = 'success')
     } else {
-      returnCtxBody(ctx, 200, data = [], message = 'success')
+      animes = []
     }
-
+    returnCtxBody(ctx, {
+      code: 200,
+      data: animes,
+      message: 'success'
+    })
   },
 
   /**
@@ -93,7 +104,10 @@ module.exports = {
       name: ctx.request.body.name
     })
     if (exist_name.length > 0) {
-      returnCtxBody(ctx, 400, error = '名称重复!')
+      returnCtxBody(ctx, {
+        code: 202,
+        error: '名称重复'
+      })
     } else {
       const anime = ctx.request.body
       const newAnime = new Anime({
@@ -112,10 +126,16 @@ module.exports = {
       })
       await newAnime.save()
         .then(() => {
-          returnCtxBody(ctx, 400, message = 'success')
+          returnCtxBody(ctx, {
+            code: 200,
+            message: 'success'
+          })
         })
         .catch((error) => {
-          returnCtxBody(ctx, 400, error)
+          returnCtxBody(ctx, {
+            code: 202,
+            error
+          })
         })
     }
   },
@@ -129,9 +149,15 @@ module.exports = {
       _id: ctx.params.id
     }, error => {
       if (error) {
-        returnCtxBody(ctx, 400, error)
+        returnCtxBody(ctx, {
+          code: 202,
+          error
+        })
       } else {
-        returnCtxBody(ctx, 200, message = 'success')
+        returnCtxBody(ctx, {
+          code: 200,
+          message: 'success'
+        })
       }
     })
   },
@@ -152,9 +178,14 @@ module.exports = {
       _id: ctx.params.id
     }, updateFields, function (error) {
       if (error) {
-        returnCtxBody(ctx, 400, error)
+        returnCtxBody(ctx, {
+          code: 400,
+          error
+        })
       } else {
-        returnCtxBody(ctx, 200)
+        returnCtxBody(ctx, {
+          code: 200
+        })
       }
     })
   },
@@ -168,12 +199,22 @@ module.exports = {
       .then((anime) => {
         if (anime) {
           anime.publish = moment(anime.publish).format('YYYY-MM')
-          returnCtxBody(ctx, 200, data = anime)
+          returnCtxBody(ctx, {
+            code: 200,
+            data: anime
+          })
+
         } else {
-          returnCtxBody(ctx, 400, error = 'anime_id not found !')
+          returnCtxBody(ctx, {
+            code: 202,
+            error: 'anime_id not found'
+          })
         }
       }).catch((error) => {
-        returnCtxBody(ctx, 500, error)
+        returnCtxBody(ctx, {
+          code: 500,
+          error
+        })
       })
   }
 
