@@ -105,7 +105,7 @@ module.exports = {
     })
     if (exist_name.length > 0) {
       returnCtxBody(ctx, {
-        code: 202,
+        code: 400,
         error: '名称重复'
       })
     } else {
@@ -133,7 +133,7 @@ module.exports = {
         })
         .catch((error) => {
           returnCtxBody(ctx, {
-            code: 202,
+            code: 400,
             error
           })
         })
@@ -150,7 +150,7 @@ module.exports = {
     }, error => {
       if (error) {
         returnCtxBody(ctx, {
-          code: 202,
+          code: 400,
           error
         })
       } else {
@@ -206,7 +206,7 @@ module.exports = {
 
         } else {
           returnCtxBody(ctx, {
-            code: 202,
+            code: 400,
             error: 'anime_id not found'
           })
         }

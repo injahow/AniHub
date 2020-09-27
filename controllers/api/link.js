@@ -58,9 +58,9 @@ module.exports = {
    */
   async add(ctx) {
     const ctx_link = ctx.request.body
-    if (ctx_link.domain === '') {
+    if (!ctx_link.domain) {
       returnCtxBody(ctx, {
-        code: 202,
+        code: 400,
         error: '链接为空'
       })
       return
@@ -76,7 +76,7 @@ module.exports = {
       })
     } else {
       returnCtxBody(ctx, {
-        code: 202,
+        code: 400,
         error: '域名不合法'
       })
       return
@@ -84,7 +84,7 @@ module.exports = {
     const exist_domain = await Link.find({ domain })
     if (exist_domain.length > 0) {
       returnCtxBody(ctx, {
-        code: 202,
+        code: 400,
         error: '域名重复'
       })
       return
@@ -120,9 +120,9 @@ module.exports = {
   */
   async addSub(ctx) {
     const ctx_link = ctx.request.body
-    if (ctx_link.domain === '') {
+    if (!ctx_link.domain) {
       returnCtxBody(ctx, {
-        code: 202,
+        code: 400,
         error: '链接为空'
       })
       return
@@ -139,7 +139,7 @@ module.exports = {
       })
     } else {
       returnCtxBody(ctx, {
-        code: 202,
+        code: 400,
         error: '域名不合法'
       })
       return
@@ -150,10 +150,30 @@ module.exports = {
     if (exist_domain.length == 0) {
       // 不存在-自动添加-获取id
       returnCtxBody(ctx, {
-        code: 202,
+        code: 400,
         error: '未知域名，请添加域名'
       })
-      return
+      /***
+       * by add() !
+       */
+      const link = ctx_link
+      const newLink = new Link({
+        domain,
+        type_name: link.type_name,
+        favicon: `${domain}/favicon.ico`,
+        add_date: new Date(),
+      })
+      await newLink.save()
+        .then((link) => {
+          link_id = link._id
+        })
+        .catch((error) => {
+          returnCtxBody(ctx, {
+            code: 500,
+            error
+          })
+        })
+
     } else {
       // 存在域名-获取id
       link_id = exist_domain[0]._id
@@ -163,7 +183,7 @@ module.exports = {
     const exist_path = await SubLink.find({ link_path: pathname, link_id })
     if (exist_path.length > 0) {
       returnCtxBody(ctx, {
-        code: 202,
+        code: 400,
         error: '路径重复'
       })
       return
@@ -185,7 +205,7 @@ module.exports = {
       })
       .catch((error) => {
         returnCtxBody(ctx, {
-          code: 202,
+          code: 400,
           error
         })
       })
