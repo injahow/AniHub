@@ -9,8 +9,7 @@ const AnimeSchema = new Schema({
     required: true
   },
   type_name: {
-    type: String,
-    required: true
+    type: String
   },
   pinyin: {
     type: Array
@@ -19,8 +18,7 @@ const AnimeSchema = new Schema({
     type: String
   },
   introduction: {
-    type: String,
-    required: true
+    type: String
   },
   publish: {
     type: Date
@@ -32,11 +30,15 @@ const AnimeSchema = new Schema({
     type: Array
   },
   tags: {
-    type: Array,
+    type: Array
   },
   region: {
     type: String
   },
+  add_date: {
+    type: Date,
+    default: Date.now
+  }
 })
 
 module.exports = Anime = db.model('Anime', AnimeSchema)

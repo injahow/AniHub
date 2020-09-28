@@ -17,13 +17,13 @@ const LinkSchema = new Schema({
   tags: { // 标签
     type: Array
   },
-  add_date: { // 添加日期 - 有默认
-    type: Date,
-    default: Date.now
-  },
   region: { // 网站所属地区
     type: String
   },
+  add_date: { // 添加日期 - 有默认
+    type: Date,
+    default: Date.now
+  }
 })
 
 module.exports = Link = db.model('Link', LinkSchema)

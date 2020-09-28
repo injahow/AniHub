@@ -3,7 +3,7 @@ const url = require('url')
 const Link = require('../../model/Link')
 const SubLink = require('../../model/SubLink')
 
-const returnCtxBody = require('./common').returnCtxBody
+const returnCtxBody = require('../../utils/api').returnCtxBody
 
 module.exports = {
 

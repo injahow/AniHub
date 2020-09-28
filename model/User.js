@@ -41,20 +41,29 @@ const UserSchema = new Schema({
   },
   region_options: {
     type: Array,
-    default: ['中国', '日本', '美国']
+    default: [
+      '中国',
+      '日本',
+      '美国',
+      '其他'
+    ]
   },
   link_type_name: {
     type: Array,
     default: [
-      '休闲娱乐', '论坛社区',
-      '科技工具', '服务托管'
+      '休闲娱乐',
+      '论坛社区',
+      '科技工具',
+      '服务托管'
     ]
   },
   link_tags: {
     type: Array,
     default: [
-      '动漫', '视频',
-      '下载', '游戏',
+      '动漫',
+      '视频',
+      '下载',
+      '游戏',
       '音乐'
     ]
   },
