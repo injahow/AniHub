@@ -100,8 +100,9 @@ module.exports = {
    * @param   {object} ctx
    */
   async add(ctx) {
+    const anime = ctx.request.body
     const exist_name = await Anime.find({
-      name: ctx.request.body.name
+      name: anime.name
     })
     if (exist_name.length > 0) {
       returnCtxBody(ctx, {
@@ -109,7 +110,6 @@ module.exports = {
         error: '名称重复'
       })
     } else {
-      const anime = ctx.request.body
       const newAnime = new Anime({
         name: anime.name,
         type_name: anime.type_name,

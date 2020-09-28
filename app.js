@@ -7,10 +7,21 @@ const cors = require('koa2-cors')
 const static = require('koa-static')
 const render = require('koa-art-template')
 
+const checkToken = require('./middleware/checkToken')
+
 const config = require('./utils/config')
 const routers = require('./routes/index')
 
 const app = new Koa()
+
+app.use(async (ctx, next) => {
+  await next()
+  if (ctx.status == 404) {
+    ctx.body = {
+      code: 404
+    }
+  }
+})
 
 // 配置日志
 app.use(convert(koaLogger()))
@@ -26,9 +37,12 @@ app.use(cors({
   maxAge: 5,
   credentials: true,
   allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowHeaders: ['Content-Type', 'Authorization', 'Accept', 'X-Requested-With', 'X-Token'],
+  allowHeaders: ['Content-Type', 'Authorization', 'Accept'],
   exposeHeaders: ['WWW-Authenticate', 'Server-Authorization']
 }))
+
+// ! checkToken after cors 放于跨域之后
+app.use(checkToken)
 
 // 配置模板渲染引擎
 render(app, {
