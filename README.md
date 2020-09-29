@@ -1,10 +1,10 @@
-# AnimeHub
+# AniHub
 
 > A vue / koa app to **list anime** you love, or to **collect anything** you want
 
 ## Build Setup
 
-### AnimeHub's server
+### AniHub's server
 
 ```bash
 # install dependencies
@@ -18,7 +18,7 @@ npm run start
 
 ```
 
-### AnimeHub's client
+### AniHub's client
 
 [vue-admin-anihub](https://github.com/injahow/vue-admin-anihub)
 
