@@ -1,6 +1,7 @@
 # AnimeHub
 
 > A vue / koa app for anime fan to list anime you love
+> Or to collect you want
 
 ## Build Setup
 
