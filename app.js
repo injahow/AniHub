@@ -16,9 +16,11 @@ const app = new Koa()
 
 app.use(async (ctx, next) => {
   await next()
-  if (ctx.status == 404) {
+  if (ctx.status === 404) {
+    ctx.status = 404
     ctx.body = {
-      code: 404
+      code: 404,
+      error: 'Not Found'
     }
   }
 })
