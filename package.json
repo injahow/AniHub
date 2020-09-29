@@ -1,7 +1,7 @@
 {
-  "name": "animehub",
+  "name": "anihub",
   "version": "1.0.0",
-  "description": "AnimeHub's server",
+  "description": "AniHub's server",
   "main": "app.js",
   "scripts": {
     "start": "npm run server",
