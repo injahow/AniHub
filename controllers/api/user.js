@@ -109,7 +109,7 @@ module.exports = {
     const name = ctx.query.name
     let data
     // !data test
-    if (name == 'anime') {
+    if (name === 'anime') {
       data = {
         type_name: ['正片', '电影', '其他'],
         tags: [
@@ -120,7 +120,7 @@ module.exports = {
         actor: ['未知'],
         staff: ['未知']
       }
-    } else if (name == 'link') {
+    } else if (name === 'link') {
       data = {
         type_name: ['正片'],
         tags: []

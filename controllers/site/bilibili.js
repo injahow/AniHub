@@ -14,7 +14,7 @@ module.exports = {
       /bilibili.com\/bangumi\/play\/ss\d+/g,
       /bilibili.com\/bangumi\/play\/ep\d+/g
     ]
-    let result = ''
+    let result
     let result_temp = []
     let result_id = 0
     re.forEach((re_i, i) => {
@@ -26,7 +26,7 @@ module.exports = {
     })
 
     if (result_id !== 0) { // not md... => md...
-      const res = await got(`https://www.${result_temp.toString()}`)
+      const res = await got(`https://www.${result_temp}`)
       result = re[0].exec(res.body)
     } else {
       result = result_temp
@@ -34,7 +34,7 @@ module.exports = {
 
     if (result) {
       try {
-        const response = await got(`https://www.${result.toString()}`)
+        const response = await got(`https://www.${result}`)
         const obj = await response.body.match(/__INITIAL_STATE__[^#]+function/g).toString()
         const mediaInfo = JSON.parse(obj.substring(18, obj.length - 10)).mediaInfo
 
@@ -47,7 +47,7 @@ module.exports = {
         mediaInfo.styles.forEach((i) => {
           tags.push(i.name)
         })
-        if (mediaInfo.cover[4] == 's') { // 改为http 绕过防盗链
+        if (mediaInfo.cover[4] === 's') { // 改为http 绕过防盗链
           mediaInfo.cover = mediaInfo.cover.replace('https', 'http')
         }
 
