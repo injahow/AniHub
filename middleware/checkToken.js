@@ -4,20 +4,23 @@ const secret = require('../utils/config').secret
 async function checkToken(ctx, next) {
 
   const url = ctx.request.url
-
-  // ? 跳过不检查token
-  if (ctx.request.method === 'OPTIONS' ||
-    url === '/api/user/login' ||
-    url === '/api/user/join' ||
-    url.substring(0, 14) === '/api/user/info') {
+  const pass_url = ['/api/user/login', '/api/user/join', '/api/user/info']
+  let is_safe_url = false
+  pass_url.forEach((i) => {
+    if (url.indexOf(i) != -1) {
+      is_safe_url = true
+    }
+  })
+  // ? pass token
+  if (ctx.request.method === 'OPTIONS' || is_safe_url) {
     await next()
   } else {
 
     const authorization = ctx.header.authorization
     if (!authorization) {
       ctx.body = {
-        code: 400,
-        message: 'no token'
+        code: 401,
+        message: 'No Token'
       }
       return
     }
@@ -59,15 +62,15 @@ async function checkToken(ctx, next) {
         // 客户端重新登录
         ctx.body = {
           code: 401,
-          message: 'token 过期'
+          error: 'Expired Token'
         }
         return
       }
 
     } else {
       ctx.body = {
-        code: 400,
-        message: 'token error'
+        code: 401,
+        error: 'Error Token'
       }
       return
     }

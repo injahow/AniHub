@@ -19,6 +19,9 @@ const UserSchema = new Schema({
   avatar: {
     type: String
   },
+  introduction: {
+    type: String
+  },
   anime_type_name: {
     type: Array,
     default: ['正片', '电影', '其他']

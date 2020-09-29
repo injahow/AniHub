@@ -2,8 +2,9 @@ const gravatar = require('gravatar')
 const md5 = require('md5')
 const jwt = require('jsonwebtoken')
 
-const User = require('../../model/User')
 const returnCtxBody = require('../../utils/api').returnCtxBody
+
+const User = require('../../model/User')
 
 module.exports = {
 
@@ -14,23 +15,18 @@ module.exports = {
   async signIn(ctx) {
 
     const { email } = ctx.request.body
-
-    //const token = tokens[username]
-
     const exist_user = await User.findOne({ email })
     if (exist_user) {
       if (exist_user.password === md5(ctx.request.body.password)) {
 
         const secret = require('../../utils/config').secret
-        // token
+        // 生成 token
         const payload = {
           id: exist_user.id,
           name: exist_user.name,
-          avatar: exist_user.avatar,
-          time: new Date().getTime(),
-          timeout: 200000 //200s 1000 * 60 * 60 * 2
+          avatar: exist_user.avatar
         }
-        const token = jwt.sign(payload, secret, { expiresIn: '10s' })
+        const token = jwt.sign(payload, secret, { expiresIn: '1h' })
         returnCtxBody(ctx, {
           code: 200,
           data: { token }
@@ -48,56 +44,58 @@ module.exports = {
         error: '邮箱不存在'
       })
     }
-    /*
-    // mock error
-    if (!token) {
-      ctx.body = {
-        code: 400,
-        message: 'Account and password are incorrect.'
-      }
-    }
 
-    ctx.body = {
-      code: 200,
-      data: token
-    }
-    */
   },
 
   /**
-   * 用户信息
+   * 判断token，获取用户信息
    * @param  {object} ctx
    */
   async getInfo(ctx) {
 
-    // const token = ctx.query.token
+    const token = ctx.query.token
 
-    const info = {
-      roles: ['admin'],
-      introduction: 'I am a super administrator',
-      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-      name: 'Super Admin'
-    }
-    /*
-    const info = {
-      roles: ['editor'],
-      introduction: 'I am an editor',
-      avatar: 'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif',
-      name: 'Normal Editor'
-    }
-    */
-
-    // mock error
-    if (!info) {
-      ctx.body = {
+    if (!token) {
+      returnCtxBody(ctx, {
         code: 400,
-        message: 'Login failed, unable to get user details.'
-      }
+        error: 'No Token'
+      })
+      return
     }
 
-    ctx.body = {
-      code: 200,
-      data: info
+    // 验证token是否合法
+    let is_ok = false
+    let info = {}
+    const secret = require('../../utils/config').secret
+    jwt.verify(token, secret, {
+      complete: true
+    }, (error, decode) => {
+      if (error) {
+        const expiredAt = parseInt(new Date(error.expiredAt).getTime() / 1000);
+        const allowTime = parseInt(new Date().getTime() / 1000) - parseInt(expiredAt);
+        if (allowTime <= 60 * 60) {
+
+          // ?失效60分钟内
+          is_ok = false
+        } else {
+          is_ok = false
+        }
+      } else {
+        is_ok = true
+        info = decode.payload
+      }
+    })
+
+    if (is_ok) {
+      returnCtxBody(ctx, {
+        code: 200,
+        data: info
+      })
+    } else {
+      returnCtxBody(ctx, {
+        code: 400,
+        error: 'Login failed, unable to get user details.'
+      })
     }
 
   },
