@@ -105,33 +105,67 @@ module.exports = {
    * @param  {object} ctx
    */
   async getOptions(ctx) {
-    // const user = User.find({}, '').lean()
+    const user_id = ctx.params.id
     const name = ctx.query.name
-    let data
-    // !data test
+    let select_str
     if (name === 'anime') {
-      data = {
-        type_name: ['正片', '电影', '其他'],
-        tags: [
-          '青春', '恋爱', '治愈', '催泪', '推理',
-          '悬疑', '神魔', '妖怪', '科幻', '机战',
-          '战争', '热血', '冒险'
-        ],
-        actor: ['未知'],
-        staff: ['未知']
-      }
+      select_str = 'anime_options'
     } else if (name === 'link') {
-      data = {
-        type_name: ['正片'],
-        tags: []
-      }
+      select_str = 'link_options'
     }
-    returnCtxBody(ctx, {
-      code: 200,
-      data,
-      message: 'success'
+
+    let obj = await User.findById(user_id, select_str).lean()
+    data = obj[select_str]
+
+    if (data) {
+      returnCtxBody(ctx, {
+        code: 200,
+        data: data,
+        message: 'success'
+      })
+    } else {
+      returnCtxBody(ctx, {
+        code: 500
+      })
+    }
+
+  },
+
+  /**
+   * 选择修改选项配置信息
+   * @param  {object} ctx
+   */
+  async editOptions(ctx) {
+    const user_id = ctx.params.id
+
+    const name = ctx.request.body.name
+    console.log(name);
+    const new_options = ctx.request.body.options
+    let updateFields = {}
+    if (name === 'anime') {
+      select_str = 'anime_options'
+    } else if (name === 'link') {
+      select_str = 'link_options'
+    }
+    updateFields[select_str] = new_options
+
+    await User.updateMany({
+      _id: user_id
+    }, updateFields, function (error) {
+      if (error) {
+        returnCtxBody(ctx, {
+          code: 400,
+          error
+        })
+      } else {
+        returnCtxBody(ctx, {
+          code: 200,
+          message: 'success'
+        })
+      }
     })
   },
+
   /**
    * 用户登出
    * @param  {object} ctx

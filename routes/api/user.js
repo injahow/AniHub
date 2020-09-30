@@ -10,6 +10,7 @@ const routers = router
   .post('/login', userApi.signIn) // 登陆
   .post('/logout', userApi.logout)
   .get('/info', userApi.getInfo)
-  .get('/options', userApi.getOptions)
+  .get('/:id/options', userApi.getOptions)
+  .put('/:id/options', userApi.editOptions)
 
 module.exports = routers

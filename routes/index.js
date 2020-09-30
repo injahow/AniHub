@@ -5,10 +5,15 @@ const router = require('@koa/router')()
 const path = require('path')
 const fs = require('fs')
 
-// 首页
+// vue-admin-anihub
 router.get('/', async ctx => {
+  await ctx.render('index.html')
+})
+
+// 首页
+router.get('/welcome', async ctx => {
   await ctx.render('welcome')
-});
+})
 
 // 同步遍历 add routes_dir
 function travel(input_dir, output_dirs) {
