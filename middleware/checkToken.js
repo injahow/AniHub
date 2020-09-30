@@ -6,16 +6,21 @@ async function checkToken(ctx, next) {
   const url = ctx.request.url
   const pass_url = ['/api/user/login', '/api/user/join', '/api/user/info']
   let is_safe_url = false
+  let is_unsafe_url = false
   pass_url.forEach((i) => {
     if (url.indexOf(i) != -1) {
       is_safe_url = true
     }
   })
+  if (!is_safe_url) {
+    if (url.indexOf('/api/user/') != -1) {
+      is_unsafe_url = true
+    }
+  }
   // ? pass token
   if (ctx.request.method === 'OPTIONS' || is_safe_url) {
     await next()
-  } else {
-
+  } else if (is_unsafe_url) {
     const authorization = ctx.header.authorization
     if (!authorization) {
       ctx.body = {
@@ -75,6 +80,8 @@ async function checkToken(ctx, next) {
       return
     }
 
+  } else {
+    await next()
   }
 }
 
