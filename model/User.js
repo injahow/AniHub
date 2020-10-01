@@ -50,6 +50,18 @@ const UserSchema = new Schema({
       'region': ['中国', '美国', '其他']
     }
   },
+  sublink_options: {
+    type: Object,
+    default: {
+      'type_name': [
+        '视频', '学习',
+        '购物', '博客'
+      ],
+      'tags': [
+        '动漫', '游戏', '音乐', '其他'
+      ]
+    }
+  },
   reg_time: {
     type: Date,
     default: Date.now

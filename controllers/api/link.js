@@ -14,10 +14,8 @@ module.exports = {
   async getList(ctx) {
     let links = await Link.find({}, 'domain favicon type_name tags region add_date').lean()
     if (links.length > 0) {
-      links.forEach((item) => {
-        if (item.add_date) {
-          item.add_date = moment(item.add_date).format('YYYY-MM-DD')
-        }
+      links.forEach(item => {
+        item.add_date = moment(item.add_date).format('YYYY-MM-DD')
       })
     }
     returnCtxBody(ctx, {
@@ -115,7 +113,7 @@ module.exports = {
   },
 
   /**
-  * 增加链接-添加路径
+  * 增加链接路径
   * @param   {object} ctx
   */
   async addSub(ctx) {
@@ -246,7 +244,7 @@ module.exports = {
   * @param  {object} ctx
   */
   async changeSub(ctx) {
-    const new_link = ctx.request.body.link
+    const new_link = ctx.request.body.sublink
     const changes = ctx.request.body.changes
     let updateFields = {}
     changes.forEach(i => {
@@ -290,7 +288,8 @@ module.exports = {
             error: 'link_id not find'
           })
         }
-      }).catch(error => {
+      })
+      .catch(error => {
         returnCtxBody(ctx, {
           code: 500,
           error
@@ -303,7 +302,29 @@ module.exports = {
    * @param  {object} ctx
    */
   async getDetailSub(ctx) {
-    await getDetail(ctx)
+    await SubLink.findById(ctx.params.id).populate('link_id', 'domain').lean()
+      .then(sublink => {
+        if (sublink) {
+          sublink.add_date = moment(sublink.add_date).format('YYYY-MM-DD')
+          sublink.domain = sublink.link_id.domain
+          returnCtxBody(ctx, {
+            code: 200,
+            data: sublink,
+            message: 'success'
+          })
+        } else {
+          returnCtxBody(ctx, {
+            code: 400,
+            error: 'sublink_id not find'
+          })
+        }
+      })
+      .catch(error => {
+        returnCtxBody(ctx, {
+          code: 500,
+          error
+        })
+      })
   }
 }
 

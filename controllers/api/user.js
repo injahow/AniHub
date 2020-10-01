@@ -112,9 +112,11 @@ module.exports = {
       select_str = 'anime_options'
     } else if (name === 'link') {
       select_str = 'link_options'
+    } else if (name === 'sublink') {
+      select_str = 'sublink_options'
     }
 
-    let obj = await User.findById(user_id, select_str).lean()
+    let obj = await User.findById(user_id, select_str)
     data = obj[select_str]
 
     if (data) {
@@ -139,19 +141,21 @@ module.exports = {
     const user_id = ctx.params.id
 
     const name = ctx.request.body.name
-    console.log(name);
     const new_options = ctx.request.body.options
+
     let updateFields = {}
     if (name === 'anime') {
       select_str = 'anime_options'
     } else if (name === 'link') {
       select_str = 'link_options'
+    } else if (name === 'sublink') {
+      select_str = 'sublink_options'
     }
     updateFields[select_str] = new_options
 
     await User.updateMany({
       _id: user_id
-    }, updateFields, function (error) {
+    }, updateFields, error => {
       if (error) {
         returnCtxBody(ctx, {
           code: 400,

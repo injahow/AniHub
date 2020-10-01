@@ -20,9 +20,10 @@ const LinkSchema = new Schema({
   region: { // 网站所属地区
     type: String
   },
-  add_date: { // 添加日期 - 有默认
+  add_date: { // 添加日期
     type: Date,
-    default: Date.now
+    default: Date.now,
+    required: true
   }
 })
 
