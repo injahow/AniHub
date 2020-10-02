@@ -2,9 +2,9 @@ const gravatar = require('gravatar')
 const md5 = require('md5')
 const jwt = require('jsonwebtoken')
 
-const returnCtxBody = require('../../utils/api').returnCtxBody
-
 const User = require('../../model/User')
+
+const { returnCtxBody } = require('../../utils/api')
 
 module.exports = {
 

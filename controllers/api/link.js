@@ -3,7 +3,7 @@ const url = require('url')
 const Link = require('../../model/Link')
 const SubLink = require('../../model/SubLink')
 
-const returnCtxBody = require('../../utils/api').returnCtxBody
+const { returnCtxBody } = require('../../utils/api')
 
 module.exports = {
 
@@ -327,5 +327,3 @@ module.exports = {
       })
   }
 }
-
-

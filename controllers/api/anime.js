@@ -2,7 +2,7 @@ const pinyin = require('pinyin')
 const moment = require('moment')
 
 const Anime = require('../../model/Anime')
-const returnCtxBody = require('../../utils/api').returnCtxBody
+const { returnCtxBody } = require('../../utils/api')
 
 module.exports = {
 

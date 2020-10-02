@@ -1,5 +1,5 @@
 const mongoose = require('mongoose')
-const mongodbURI = require('./config').mongodbURI
+const { mongodbURI } = require('./config')
 
 // 连接数据库
 const conn = mongoose.createConnection(
@@ -8,10 +8,13 @@ const conn = mongoose.createConnection(
   useUnifiedTopology: true
 })
 conn.on('open', () => {
-  console.log('mongodb connected !')
+  console.log('db connected !')
 })
-conn.on('err', (err) => {
-  console.log('mongodb error:', err)
+conn.on('disconnected', () => {
+  console.log('db disconnected !');
+})
+conn.on('err', err => {
+  console.log('db error :', err)
 })
 
 module.exports = conn
