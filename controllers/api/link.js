@@ -36,10 +36,8 @@ module.exports = {
     ).populate('link_id', 'domain').lean()
     if (links.length > 0) {
       links.forEach((item) => {
-        if (item.add_date) {
-          item.add_date = moment(item.add_date).format('YYYY-MM-DD')
-        }
         item.domain = url.resolve(item.link_id.domain, item.link_path)
+        item.add_date = moment(item.add_date).format('YYYY-MM-DD')
       })
     }
     returnCtxBody(ctx, {
@@ -48,6 +46,49 @@ module.exports = {
       message: 'success'
     })
 
+  },
+
+  /**
+  * 按规则搜索数据
+  * @param  {object} ctx
+  */
+  async getIndexSub(ctx) {
+    let form = ctx.request.body
+    let rules
+    if (form) {
+      // key -> type? region publish! tags
+      rules = form
+      for (let key in form) {
+        if (form[key] === '全部') {
+          delete rules[key]
+        }
+      }
+      if ('add_date' in rules) {
+        const year = parseInt(rules['add_date'])
+        rules['add_date'] = {
+          "$gte": new Date(year, 0, 0, 0, 0, 0).toISOString(),
+          "$lt": new Date(year + 1, 0, 0, 0, 0, 0).toISOString()
+        }
+      }
+    } else {
+      rules = {}
+    }
+
+    let sub_links = await SubLink.find(rules,
+      'link_path type_name tags add_time',
+      { limit: 50 }).populate('link_id', 'domain').lean()
+    console.log(sub_links);
+    if (sub_links.length > 0) {
+      sub_links.forEach((item) => {
+        item.domain = url.resolve(item.link_id.domain, item.link_path)
+        item.add_date = moment(item.add_date).format('YYYY-MM-DD')
+      })
+    }
+    returnCtxBody(ctx, {
+      code: 200,
+      data: sub_links,
+      message: 'success'
+    })
   },
 
   /**
