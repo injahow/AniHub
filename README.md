@@ -1,6 +1,6 @@
 # AniHub
 
-> A vue / koa app to **list anime** you love, or to **collect everything** you want
+> A vue / koa app to **list anime** you love, or to **collect any link** you want
 
 ## Build Setup
 
