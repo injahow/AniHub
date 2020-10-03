@@ -2,8 +2,8 @@
 module.exports = {
   /**
    * 返回格式化ctx
-   * @param {object} ctx
-   * @param {object} arg
+   * @param {Object} ctx
+   * @param {Object} arg
    */
   returnCtxBody(ctx, arg) {
     const code = arg.code || 500
