@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken')
 const secret = require('../utils/config').secret
+const { returnCtxBody } = require('../utils/api')
 
 async function checkToken(ctx, next) {
 
@@ -7,25 +8,29 @@ async function checkToken(ctx, next) {
   const pass_url = ['/api/user/login', '/api/user/join', '/api/user/info']
   let is_pass_url = false
   // choose: open api other than user ? no.
-  // ? let is_unsafe_url = true
+  // ? let is_safe_url = true
   pass_url.forEach((i) => {
     if (url.indexOf(i) != -1) {
       is_pass_url = true
     }
   })
+  // 跳过 public & public/static
+  if (!is_pass_url && (url === '/' || url.substr(0, 2) === '/?' || url.substr(0, 8) === '/static/')) {
+    is_pass_url = true
+  }
   // ? if (!is_pass_url && url.indexOf('/api/user/') != -1) {
-  // ?   is_unsafe_url = true
+  // ?   is_safe_url = false
   // ? }
   // pass token
-  if (ctx.request.method === 'OPTIONS' || is_pass_url) {
+  if (ctx.request.method === 'OPTIONS' || is_pass_url) { // ? || is_safe_url) {
     await next()
-  } else {// ? if (is_unsafe_url) {
+  } else {
     const authorization = ctx.header.authorization
     if (!authorization) {
-      ctx.body = {
+      returnCtxBody({
         code: 401,
         message: 'No Token'
-      }
+      })
       return
     }
     const parts = authorization.split(' ')
@@ -64,25 +69,21 @@ async function checkToken(ctx, next) {
         await next()
       } else {
         // 客户端重新登录
-        ctx.body = {
+        returnCtxBody({
           code: 401,
           error: 'Expired Token'
-        }
+        })
         return
       }
 
     } else {
-      ctx.body = {
+      returnCtxBody({
         code: 401,
         error: 'Error Token'
-      }
+      })
       return
     }
-
   }
-  // ? else { // not user api
-  // ?   await next()
-  // ? }
 }
 
 module.exports = checkToken
