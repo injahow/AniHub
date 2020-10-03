@@ -9,8 +9,9 @@ async function checkToken(ctx, next) {
   let is_pass_url = false
   // choose: open api other than user ? no.
   // ? let is_safe_url = true
+  const real_url = url.substr(0, 15) // not after ?/...
   pass_url.forEach((i) => {
-    if (url.indexOf(i) != -1) {
+    if (real_url.indexOf(i) != -1) {
       is_pass_url = true
     }
   })
@@ -27,9 +28,9 @@ async function checkToken(ctx, next) {
   } else {
     const authorization = ctx.header.authorization
     if (!authorization) {
-      returnCtxBody({
+      returnCtxBody(ctx, {
         code: 401,
-        message: 'No Token'
+        error: 'No Token'
       })
       return
     }
@@ -69,7 +70,7 @@ async function checkToken(ctx, next) {
         await next()
       } else {
         // 客户端重新登录
-        returnCtxBody({
+        returnCtxBody(ctx, {
           code: 401,
           error: 'Expired Token'
         })
@@ -77,7 +78,7 @@ async function checkToken(ctx, next) {
       }
 
     } else {
-      returnCtxBody({
+      returnCtxBody(ctx, {
         code: 401,
         error: 'Error Token'
       })
