@@ -22,6 +22,18 @@ const UserSchema = new Schema({
   introduction: {
     type: String
   },
+  github_name: {
+    type: String
+  },
+  weibo_name: {
+    type: String
+  },
+  twitter_name: {
+    type: String
+  },
+  facebook_name: {
+    type: String
+  },
   anime_options: {
     type: Object,
     default: {
@@ -61,6 +73,10 @@ const UserSchema = new Schema({
         '动漫', '游戏', '音乐', '其他'
       ]
     }
+  },
+  status: {
+    type: Boolean,
+    default: true
   },
   reg_time: {
     type: Date,

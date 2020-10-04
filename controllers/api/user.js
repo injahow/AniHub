@@ -108,7 +108,9 @@ module.exports = {
     const user_id = ctx.params.id
     const name = ctx.query.name
     let select_str
-    if (name === 'anime') {
+    if (name === 'user') {
+      select_str = 'avatar introduction github_name weibo_name twitter_name facebook_name'
+    } else if (name === 'anime') {
       select_str = 'anime_options'
     } else if (name === 'link') {
       select_str = 'link_options'
@@ -117,12 +119,12 @@ module.exports = {
     }
 
     let obj = await User.findById(user_id, select_str)
-    data = obj[select_str]
+    data = name === 'user' ? obj : obj[select_str]
 
     if (data) {
       returnCtxBody(ctx, {
         code: 200,
-        data: data,
+        data,
         message: 'success'
       })
     } else {
@@ -142,7 +144,9 @@ module.exports = {
 
     const name = ctx.request.body.name
     const new_options = ctx.request.body.options
+    if (new_options._id) {
 
+    }
     let updateFields = {}
     if (name === 'anime') {
       select_str = 'anime_options'
@@ -151,7 +155,13 @@ module.exports = {
     } else if (name === 'sublink') {
       select_str = 'sublink_options'
     }
-    updateFields[select_str] = new_options
+
+    if (name === 'user') {
+      delete new_options._id
+      updateFields = new_options
+    } else {
+      updateFields[select_str] = new_options
+    }
 
     await User.updateMany({
       _id: user_id
