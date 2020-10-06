@@ -206,6 +206,11 @@ module.exports = {
         code: 400,
         error: '邮箱重复'
       })
+    } else if(ctx.request.body.password !== ctx.request.body.password2){
+      returnCtxBody(ctx, {
+        code: 400,
+        error: '两次密码不一致'
+      })
     } else {
       const newUser = new User({
         name: ctx.request.body.name,
