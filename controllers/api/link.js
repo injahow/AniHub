@@ -179,7 +179,7 @@ module.exports = {
     } else {
       returnCtxBody(ctx, {
         code: 400,
-        error: '域名不合法'
+        error: '链接不合法'
       })
       return
     }
@@ -188,10 +188,6 @@ module.exports = {
     let link_id
     if (exist_domain.length == 0) {
       // 不存在-自动添加-获取id
-      returnCtxBody(ctx, {
-        code: 400,
-        error: '未知域名，请添加域名'
-      })
       /***
        * by add() !
        */
@@ -203,10 +199,10 @@ module.exports = {
         add_date: new Date(),
       })
       await newLink.save()
-        .then((link) => {
+        .then(link => {
           link_id = link._id
         })
-        .catch((error) => {
+        .catch(error => {
           returnCtxBody(ctx, {
             code: 500,
             error
