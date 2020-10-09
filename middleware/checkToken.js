@@ -46,8 +46,7 @@ async function checkToken(ctx, next) {
           complete: true
         }, (error, decode) => {
           if (error) {
-            const expiredAt = parseInt(new Date(error.expiredAt).getTime() / 1000);
-            const allowTime = parseInt(new Date().getTime() / 1000) - parseInt(expiredAt);
+            const allowTime = ( Date.now() - error.expiredAt ) / 1000
             if (allowTime <= 60 * 60) {
               // 失效60分钟内更新
               is_ok = true

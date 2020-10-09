@@ -37,7 +37,8 @@ const AnimeSchema = new Schema({
   },
   add_date: {
     type: Date,
-    default: Date.now
+    default: Date.now,
+    required: true
   }
 })
 
