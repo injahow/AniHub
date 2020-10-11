@@ -24,7 +24,14 @@ module.exports = {
         const payload = {
           id: exist_user.id,
           name: exist_user.name,
-          avatar: exist_user.avatar
+          avatar: exist_user.avatar,
+          email: exist_user.email,
+          introduction: exist_user.introduction,
+          github: exist_user.github_name,
+          weibo: exist_user.weibo_name,
+          twitter: exist_user.twitter_name,
+          facebook: exist_user.facebook_name
+
         }
         const token = jwt.sign(payload, secret, { expiresIn: '1h' })
         returnCtxBody(ctx, {
